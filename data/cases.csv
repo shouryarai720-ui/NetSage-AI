@@ -1,0 +1,271 @@
+case_id,title,symptom,topology_note,show_outputs,expected_fault,expected_osi_layer,concept_tag,severity,expected_next_command,expected_fix_steps,expected_rule_ids
+NET-001,Inter-VLAN routing sub-interface administratively down,PC1 cannot reach Server1 in VLAN 30. Router-on-a-stick configuration seems broken on GigabitEthernet0/0.30.,"{""nodes"":[{""id"":""pc1"",""name"":""User-PC-01"",""type"":""PC"",""ip"":""10.10.10.15"",""vlan"":""VLAN 10"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.2"",""status"":""active"",""x"":300,""y"":180,""interfaces"":[""Gi0/1"",""Gi0/2""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.10.10.1"",""status"":""warning"",""x"":500,""y"":180,""interfaces"":[""Gi0/0.10"",""Gi0/0.30""]},{""id"":""srv1"",""name"":""Auth-Server-01"",""type"":""Server"",""ip"":""10.30.30.50"",""vlan"":""VLAN 30"",""status"":""failed"",""x"":700,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""active"",""bandwidth"":""100 Mbps""},{""source"":""sw1"",""target"":""r1"",""status"":""active"",""bandwidth"":""1 Gbps""},{""source"":""r1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps (Sub-if Down)""}]}","CORE-ROUTER-01# show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up
+GigabitEthernet0/0.10  10.10.10.1      YES manual up                    up
+GigabitEthernet0/0.30  10.30.30.1      YES manual administratively down down
+GigabitEthernet0/1     172.16.1.1      YES manual up                    up","The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prevents routing gateway operations for VLAN 30 clients.",Layer 3 (Network),Inter-VLAN Routing,High,show running-config interface GigabitEthernet0/0.30,"configure terminal
+interface GigabitEthernet0/0.30
+no shutdown",RC-01
+NET-002,Access layer physical interface protocol down,PC2 has completely lost physical and logical connectivity to local access switch. Cable or port hardware suspected.,"{""nodes"":[{""id"":""pc2"",""name"":""User-PC-02"",""type"":""PC"",""ip"":""10.10.10.16"",""vlan"":""VLAN 10"",""status"":""failed"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.2"",""status"":""warning"",""x"":400,""y"":180,""interfaces"":[""Fa0/12""]},{""id"":""srv1"",""name"":""App-Server-02"",""type"":""Server"",""ip"":""10.30.30.51"",""status"":""active"",""x"":700,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc2"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""100 Mbps (L1 Down)""},{""source"":""sw1"",""target"":""srv1"",""status"":""active"",""bandwidth"":""1 Gbps""}]}","ACCESS-SWITCH-01# show interfaces fastethernet 0/12
+FastEthernet0/12 is down, line protocol is down (notconnect)
+  Hardware is Fast Ethernet, address is 0011.2233.4455
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+     reliability 0/255, txload 0/255, rxload 0/255","The physical cable to FastEthernet0/12 is disconnected, damaged, or the network interface card on the PC side is powered off.",Layer 1 (Physical),L1 Physical,Medium,show cdp neighbors,"configure terminal
+interface FastEthernet0/12
+shutdown
+no shutdown (and check physical ethernet cabling link)",RC-02
+NET-003,Duplicate IP address conflict on server vlan,Critical ERP system Server1 is experiencing intermittent dropouts. Logs show ARP conflict warnings.,"{""nodes"":[{""id"":""pc1"",""name"":""Rogue-Device"",""type"":""PC"",""ip"":""10.30.30.50"",""vlan"":""VLAN 30"",""status"":""warning"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""CORE-SWITCH-01"",""type"":""Switch"",""ip"":""10.30.30.2"",""status"":""warning"",""x"":400,""y"":180,""interfaces"":[""Gi1/1"",""Gi1/2""]},{""id"":""srv1"",""name"":""ERP-Server"",""type"":""Server"",""ip"":""10.30.30.50"",""vlan"":""VLAN 30"",""status"":""failed"",""x"":700,""y"":320,""interfaces"":[""Gi1/2""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""active"",""bandwidth"":""1 Gbps""},{""source"":""sw1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""10 Gbps (IP Conflict)""}]}","CORE-SWITCH-01# show logging | include Duplicate
+%IP-4-DUPADDR: Duplicate IP address 10.30.30.50 on GigabitEthernet1/1, sourced by mac address 0019.55aa.bbcc
+%IP-4-DUPADDR: Duplicate IP address 10.30.30.50 on GigabitEthernet1/1, sourced by mac address 0019.55aa.bbcc",A static IP conflict exists on the network. An rogue host or secondary device has been misconfigured with the IP address of the core server: 10.30.30.50.,Layer 3 (Network),IPAM,Critical,show mac address-table address 0019.55aa.bbcc,"configure terminal
+arp authorized (to enforce MAC-IP bindings)
+interface GigabitEthernet1/1
+ip dhcp snooping limit rate 150",RC-05
+NET-004,OSPF link subnet mask mismatch,OSPF neighborhood cannot form between CORE-ROUTER and BRANCH-RT. Stuck in INIT state.,"{""nodes"":[{""id"":""sw1"",""name"":""BRANCH-RT-01"",""type"":""Router"",""ip"":""192.168.10.2"",""status"":""warning"",""x"":200,""y"":150,""interfaces"":[""Gi0/1""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""192.168.10.1"",""status"":""warning"",""x"":600,""y"":150,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""sw1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""1 Gbps (Mask Mismatch)""}]}","BRANCH-RT-01# show ip ospf interface GigabitEthernet0/1
+GigabitEthernet0/1 is up, line protocol is up
+  Internet Address 192.168.10.2/29, Area 0
+  Process ID 1, Router ID 2.2.2.2, Network Type BROADCAST
+  
+CORE-ROUTER-01# show ip ospf interface GigabitEthernet0/1
+Internet Address 192.168.10.1/24, Area 0",OSPF neighbor adjacencies require subnet masks to match on broadcast links. The mask /29 on BRANCH-RT-01 conflicts with /24 on CORE-ROUTER-01.,Layer 3 (Network),L3 Routing,High,show running-config interface GigabitEthernet0/1,"configure terminal
+interface GigabitEthernet0/1
+ip address 192.168.10.2 255.255.255.0 (Reconfigure mask to match /24)",RC-03
+NET-005,PC Default Gateway IP mismatch,PC3 can ping local switch SVI but cannot browse or ping external internet servers.,"{""nodes"":[{""id"":""pc3"",""name"":""PC-03-CLIENT"",""type"":""PC"",""ip"":""10.10.10.17"",""status"":""warning"",""x"":150,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.2"",""status"":""active"",""x"":450,""y"":180,""interfaces"":[""Vlan10""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.10.10.1"",""status"":""active"",""x"":750,""y"":180,""interfaces"":[""Gi0/0""]}],""links"":[{""source"":""pc3"",""target"":""sw1"",""status"":""active"",""bandwidth"":""100 Mbps""},{""source"":""sw1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""1 Gbps (Gateway Mismatch)""}]}","C:\> ipconfig /all
+Ethernet Adapter local:
+   IPv4 Address. . . . . . . . . . . : 10.10.10.17
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 10.10.10.254 (unreachable)
+
+ACCESS-SWITCH-01# show ip interface brief
+Interface              IP-Address      OK? Status                Protocol
+Vlan10                 10.10.10.1      YES up                    up",A gateway IP mismatch on the client. The PC static default gateway configuration has a typo pointing to 10.10.10.254 instead of 10.10.10.1.,Layer 3 (Network),IPAM / Gateway,Medium,ping 10.10.10.1,Reconfigure Client static default gateway IP on adapter settings to: 10.10.10.1,RC-04
+NET-006,Missing VLAN database entry on access switch,Accounting PCs in VLAN 20 are completely isolated from the switch and router trunk link.,"{""nodes"":[{""id"":""pc1"",""name"":""Accounting-PC"",""type"":""PC"",""ip"":""10.20.20.15"",""vlan"":""VLAN 20"",""status"":""failed"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-03"",""type"":""Switch"",""ip"":""10.20.20.2"",""status"":""failed"",""x"":450,""y"":180,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.20.20.1"",""status"":""active"",""x"":750,""y"":180,""interfaces"":[""Gi0/0""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""100 Mbps (Missing VLAN)""},{""source"":""sw1"",""target"":""r1"",""status"":""active"",""bandwidth"":""1 Gbps""}]}","ACCESS-SWITCH-03# show vlan brief
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3
+10   Engineering                      active    Fa0/4, Fa0/5
+100  DMZ                              active    Fa0/20",VLAN 20 was assigned to access ports but has never been added to the switch VLAN database. Ports in non-existent VLANs are kept inactive.,Layer 2 (Data Link),L2 Switching,High,show running-config interface FastEthernet0/10,"configure terminal
+vlan 20
+name Accounting
+exit",RC-06
+NET-007,Native VLAN trunk mismatch,Cisco switches reporting native VLAN mismatch messages on syslog. Trunk link performance degraded.,"{""nodes"":[{""id"":""sw1"",""name"":""ACCESS-SWITCH-04"",""type"":""Switch"",""ip"":""10.99.99.2"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Gi0/1""]},{""id"":""sw2"",""name"":""DIST-SWITCH-02"",""type"":""Switch"",""ip"":""10.99.99.3"",""status"":""warning"",""x"":600,""y"":180,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""sw1"",""target"":""sw2"",""status"":""failed"",""bandwidth"":""1 Gbps (VLAN Mismatch)""}]}","DIST-SWITCH-02# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Gi0/1       on               802.1q         trunking      10
+
+ACCESS-SWITCH-04# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Gi0/1       on               802.1q         trunking      99","A native VLAN mismatch exists on Gi0/1 trunk. Frames sent unencapsulated on Native VLAN 10 from Dist switch will be received in Native VLAN 99 on Access switch, creating cross-VLAN leaks.",Layer 2 (Data Link),L2 Trunking,Medium,show spanning-tree trunk,"configure terminal
+interface GigabitEthernet0/1
+switchport trunk native vlan 99 (or return both interfaces to the standard default VLAN 1)",RC-07
+NET-008,Missing static route for network gateway,Headquarters cannot reach newly configured Branch subnet 192.168.50.0/24.,"{""nodes"":[{""id"":""r1"",""name"":""HQ-ROUTER-01"",""type"":""Router"",""ip"":""172.16.50.1"",""status"":""warning"",""x"":200,""y"":150,""interfaces"":[""Gi0/0""]},{""id"":""r2"",""name"":""BRANCH-ROUTER-01"",""type"":""Router"",""ip"":""172.16.50.2"",""status"":""active"",""x"":500,""y"":150,""interfaces"":[""Gi0/0""]},{""id"":""srv1"",""name"":""Branch-Server"",""type"":""Server"",""ip"":""192.168.50.10"",""status"":""failed"",""x"":800,""y"":150,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""r1"",""target"":""r2"",""status"":""active"",""bandwidth"":""10 Gbps""},{""source"":""r2"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps (Route Missing)""}]}","HQ-ROUTER-01# show ip route
+Gateway of last resort is 172.16.50.1 to network 0.0.0.0
+
+      172.16.0.0/16 is variably subnetted, 2 subnets, 2 masks
+C        172.16.50.0/30 is directly connected, GigabitEthernet0/0
+C        192.168.10.0/24 is directly connected, GigabitEthernet0/1
+HQ-ROUTER-01# ping 192.168.50.10
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.50.10, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)",There is no static or dynamic route in the HQ-ROUTER-01 routing table for Branch subnet 192.168.50.0/24. Routing lookup fails and drops traffic.,Layer 3 (Network),L3 Routing,High,show running-config | include ip route,"configure terminal
+ip route 192.168.50.0 255.255.255.0 172.16.50.2",RC-08
+NET-009,Standard ACL blocking web port traffic,Clients in VLAN 10 report they cannot access HTTP/HTTPS services hosted on local core DMZ servers.,"{""nodes"":[{""id"":""pc1"",""name"":""Web-Client"",""type"":""PC"",""ip"":""10.10.10.15"",""vlan"":""VLAN 10"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""CORE-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.2"",""status"":""warning"",""x"":400,""y"":180,""interfaces"":[""Gi0/1""]},{""id"":""srv1"",""name"":""Web-Server"",""type"":""Server"",""ip"":""10.30.30.50"",""vlan"":""VLAN 30"",""status"":""failed"",""x"":700,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""active"",""bandwidth"":""100 Mbps""},{""source"":""sw1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""10 Gbps (ACL Deny)""}]}","CORE-SWITCH-01# show ip access-lists
+Standard IP access list 101
+    10 deny 10.10.10.0 0.0.0.255 (match-count 14502)
+    20 permit any",Access-list 101 is configured with a broad Standard ACL blocking all IP traffic from 10.10.10.0/24. This cuts off web traffic (port 80/443) which requires an Extended ACL.,Layer 4 (Transport),Security,High,show running-config | include access-list,"configure terminal
+no access-list 101
+ip access-list extended SECURE-WEB
+permit tcp 10.10.10.0 0.0.0.255 host 10.30.30.50 eq 80
+permit tcp 10.10.10.0 0.0.0.255 host 10.30.30.50 eq 443",RC-09
+NET-010,DHCP address pool exhausted,New devices in the conference room are failing to acquire an IP address. They default to APIPA (169.254.x.x).,"{""nodes"":[{""id"":""pc1"",""name"":""Conf-Room-Laptop"",""type"":""PC"",""ip"":""169.254.12.3"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-05"",""type"":""Switch"",""ip"":""192.168.20.2"",""status"":""active"",""x"":450,""y"":180,""interfaces"":[""Fa0/2""]},{""id"":""r1"",""name"":""HQ-ROUTER-01"",""type"":""Router"",""ip"":""192.168.20.1"",""status"":""warning"",""x"":750,""y"":180,""interfaces"":[""Gi0/0""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""100 Mbps (APIPA)""},{""source"":""sw1"",""target"":""r1"",""status"":""active"",""bandwidth"":""1 Gbps""}]}","HQ-ROUTER-01# show ip dhcp pool CONF-ROOM
+Pool CONF-ROOM :
+  Utilization mark (80/100)
+  Subnet 192.168.20.0/28
+  Lease structure: 86400 secs
+  Total addresses: 11
+  Allocated addresses: 11 (100% exhausted)
+  Excluded addresses: 3","The DHCP address scope 192.168.20.0/28 is too small. With only 11 usable addresses, new conference room hosts cannot acquire IP leases.",Layer 3 (Network),IPAM / DHCP,Medium,show running-config | section dhcp,"configure terminal
+ip dhcp pool CONF-ROOM
+no network 192.168.20.0 255.255.255.240
+network 192.168.20.0 255.255.255.0 (Expand subnet lease pool scope to /24)",RC-10
+NET-011,NAT translation rule misconfiguration,Internal office LAN devices cannot access public internet or resolve DNS root domains.,"{""nodes"":[{""id"":""pc1"",""name"":""Corp-LAN-PC"",""type"":""PC"",""ip"":""192.168.10.15"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""BORDER-ROUTER-01"",""type"":""Router"",""ip"":""192.168.10.1"",""status"":""warning"",""x"":450,""y"":180,""interfaces"":[""Gi0/0"",""Gi0/1""]},{""id"":""srv1"",""name"":""ISP-Gateway"",""type"":""Server"",""ip"":""8.8.8.8"",""status"":""failed"",""x"":800,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""active"",""bandwidth"":""1 Gbps""},{""source"":""r1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps (NAT Outside Missing)""}]}","BORDER-ROUTER-01# show ip nat statistics
+Total active translations: 0
+Peak translations: 0
+Area interfaces:
+  GigabitEthernet0/0 (inside)
+  GigabitEthernet0/1 (unassigned) - WARNING: Missing outside declaration!",The border gateway interface GigabitEthernet0/1 connected to the public ISP router is missing the 'ip nat outside' command. Address translation failed.,Layer 3 (Network),L3 NAT,High,show running-config interface GigabitEthernet0/1,"configure terminal
+interface GigabitEthernet0/1
+ip nat outside
+exit
+ip nat inside source list 1 interface GigabitEthernet0/1 overload",RC-14
+NET-012,Wrong 802.1Q sub-interface encapsulation,PC4 in VLAN 40 cannot establish TCP connections. Checking VLAN binding encapsulation.,"{""nodes"":[{""id"":""pc1"",""name"":""User-PC-04"",""type"":""PC"",""ip"":""10.40.40.15"",""vlan"":""VLAN 40"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.40.40.1"",""status"":""warning"",""x"":500,""y"":180,""interfaces"":[""Gi0/0.40""]},{""id"":""srv1"",""name"":""Web-Server-V40"",""type"":""Server"",""ip"":""10.40.40.200"",""status"":""failed"",""x"":800,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""100 Mbps (Encap Mismatch)""},{""source"":""r1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps""}]}","CORE-ROUTER-01# show running-config interface GigabitEthernet0/0.40
+building configuration...
+!
+interface GigabitEthernet0/0.40
+ encapsulation dot1Q 50 (WARNING: Mismatched encapsulation!)
+ ip address 10.40.40.1 255.255.255.0
+!","A VLAN tag ID mismatch. The sub-interface GigabitEthernet0/0.40 is encapsulated for VLAN 50, dropping all VLAN 40 packets.",Layer 2 (Data Link),Inter-VLAN Routing,High,show interfaces subinterfaces,"configure terminal
+interface GigabitEthernet0/0.40
+encapsulation dot1Q 40",RC-15
+NET-013,Access port safety Port-Security errdisable,User moved cables and suddenly lost access. Switchport Gi0/4 LED is solid amber.,"{""nodes"":[{""id"":""pc1"",""name"":""Violator-PC"",""type"":""PC"",""ip"":""10.10.10.99"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-02"",""type"":""Switch"",""ip"":""10.10.10.3"",""status"":""failed"",""x"":500,""y"":180,""interfaces"":[""Gi0/4""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""1 Gbps (Errdisabled)""}]}","ACCESS-SWITCH-02# show interfaces gigabitethernet 0/4 status
+Port      Name               Status       Vlan       Duplex  Speed Type
+Gi0/4     User-Outlet-04     err-disabled 10         auto    auto  10/100/1000BaseTX
+ACCESS-SWITCH-02# show port-security interface gigabitethernet 0/4
+Port Security: Enabled
+Port Status: Secure-shutdown",An unauthorized MAC address was connected to GigabitEthernet0/4. The switchport triggered its port-security violation rule and entered 'err-disabled' status.,Layer 1 (Physical),L1 Physical,Medium,show port-security interface gigabitethernet 0/4,"configure terminal
+interface GigabitEthernet0/4
+shutdown
+no shutdown (Resets port-security error state)",RC-13
+NET-014,Wrong subnet mask assignment on core link,Core router cannot reach distribution switch SVI. Link status up but ping failing.,"{""nodes"":[{""id"":""sw1"",""name"":""DIST-SWITCH-01"",""type"":""Switch"",""ip"":""10.100.100.2"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Gi0/2""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.100.100.1"",""status"":""warning"",""x"":600,""y"":180,""interfaces"":[""Gi0/2""]}],""links"":[{""source"":""sw1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""1 Gbps (Subnet Mask Conflict)""}]}","DIST-SWITCH-01# show ip interface brief vlan 100
+Interface              IP-Address      OK? Status                Protocol
+Vlan100                10.100.100.2    YES manual up                    up
+
+CORE-ROUTER-01# show running-config interface GigabitEthernet0/2
+ip address 10.100.100.1 255.255.255.252 (Configured as /30, conflicting with /24)","A subnet mask mismatch. The router SVI/interface has a 30-bit mask, causing it to reject IP packets from 10.100.100.2 as outside its range.",Layer 3 (Network),L3 Routing,High,show running-config interface GigabitEthernet0/2,"configure terminal
+interface GigabitEthernet0/2
+ip address 10.100.100.1 255.255.255.0",RC-03
+NET-015,VLAN mismatch on distribution port-channel,Distribution aggregation trunks dropping database synchronization frames.,"{""nodes"":[{""id"":""sw1"",""name"":""CORE-SWITCH-01"",""type"":""Switch"",""ip"":""10.100.1.1"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Po1""]},{""id"":""sw2"",""name"":""DIST-SWITCH-02"",""type"":""Switch"",""ip"":""10.100.1.2"",""status"":""warning"",""x"":600,""y"":180,""interfaces"":[""Po1""]}],""links"":[{""source"":""sw1"",""target"":""sw2"",""status"":""failed"",""bandwidth"":""20 Gbps (Native VLAN Mismatch)""}]}","CORE-SWITCH-01# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      100
+
+DIST-SWITCH-02# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      1",Native VLAN mismatch on the active EtherChannel trunk interface Port-Channel 1. This leaks spanning-tree and administration traffic.,Layer 2 (Data Link),L2 Trunking,High,show etherchannel summary,"configure terminal
+interface Port-Channel 1
+switchport trunk native vlan 100",RC-07
+NET-016,Administratively down core backbone trunk interface,Redundant link between Core and Distribution switches completely dark. No traffic throughput.,"{""nodes"":[{""id"":""sw1"",""name"":""CORE-SWITCH-01"",""type"":""Switch"",""ip"":""10.100.1.1"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Gi0/24""]},{""id"":""sw2"",""name"":""DIST-SWITCH-01"",""type"":""Switch"",""ip"":""10.100.1.3"",""status"":""active"",""x"":600,""y"":180,""interfaces"":[""Gi0/24""]}],""links"":[{""source"":""sw1"",""target"":""sw2"",""status"":""failed"",""bandwidth"":""1 Gbps (Trunk Down)""}]}","CORE-SWITCH-01# show ip interface brief
+Interface              IP-Address      OK? Status                Protocol
+GigabitEthernet0/24    unassigned      YES manual administratively down down","The GigabitEthernet0/24 interface on the core switch has been administratively disabled, disabling link aggregation failover.",Layer 1 (Physical),L1 Physical,Critical,show interfaces status,"configure terminal
+interface GigabitEthernet0/24
+no shutdown",RC-01
+NET-017,Duplicate gateway SVI IP assignment,Corporate router gateway is flapping on ARP cache tables. MAC address conflicts occurring.,"{""nodes"":[{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.1.1.1"",""status"":""failed"",""x"":200,""y"":180,""interfaces"":[""Gi0/0""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-01"",""type"":""Switch"",""ip"":""10.1.1.1"",""status"":""warning"",""x"":600,""y"":180,""interfaces"":[""Vlan1""]}],""links"":[{""source"":""r1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""10 Gbps (IP Conflict)""}]}","CORE-ROUTER-01# show logging | include %IP-4-DUPADDR
+%IP-4-DUPADDR: Duplicate IP address 10.1.1.1 on GigabitEthernet0/0, sourced by mac address 00aa.22bb.ccdd","An access-layer switch SVI or rogue administrator has configured their interface with the gateway IP 10.1.1.1, interrupting routing.",Layer 3 (Network),IPAM,Critical,show mac address-table address 00aa.22bb.ccdd,"Find rogue switch and reconfigure SVI to secondary IP (e.g., 10.1.1.254)",RC-05
+NET-018,ACL denying essential secure shell port 22,Network administrators cannot connect via SSH to core switches to manage VLAN databases.,"{""nodes"":[{""id"":""pc1"",""name"":""Admin-Console"",""type"":""PC"",""ip"":""10.10.10.5"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""DIST-SWITCH-01"",""type"":""Switch"",""ip"":""10.100.1.10"",""status"":""failed"",""x"":500,""y"":180,""interfaces"":[""Vlan100""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""1 Gbps (SSH Blocked)""}]}","DIST-SWITCH-01# show ip access-lists
+Extended IP access list INGRESS-FILTER
+    10 deny tcp any any eq 22 (match-count 421)
+    20 permit ip any any","An active access control list INGRESS-FILTER is blocking all SSH connections (TCP Port 22), preventing remote administration.",Layer 4 (Transport),Security,Medium,show running-config interface Vlan100,"configure terminal
+ip access-list extended INGRESS-FILTER
+no 10 (Delete the explicit deny block)
+10 permit tcp 10.10.10.0 0.0.0.255 any eq 22 (Allow SSH only from secure admin network)",RC-09
+NET-019,Gateway mismatch on finance server network,Finance file server fails to execute scheduled backups to the main backup cloud system.,"{""nodes"":[{""id"":""srv1"",""name"":""FIN-FILE-SRV"",""type"":""Server"",""ip"":""10.200.200.50"",""status"":""warning"",""x"":150,""y"":320,""interfaces"":[""Gi1/1""]},{""id"":""r1"",""name"":""FIN-GATEWAY"",""type"":""Router"",""ip"":""10.200.200.1"",""status"":""active"",""x"":500,""y"":180,""interfaces"":[""Gi0/0""]}],""links"":[{""source"":""srv1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""10 Gbps (Gateway Mismatch)""}]}","FIN-FILE-SRV# ipconfig /all
+Connection-specific DNS Suffix  . : internal
+IPv4 Address. . . . . . . . . . . : 10.200.200.50
+Subnet Mask . . . . . . . . . . . : 255.255.255.0
+Default Gateway . . . . . . . . . : 10.200.200.2 (MISMATCHED - expected 10.200.200.1)",A gateway SVI IP mismatch. The finance server is statically configured with an incorrect default gateway IP of 10.200.200.2.,Layer 3 (Network),IPAM / Gateway,High,ping 10.200.200.1,Reconfigure file server default gateway network adapter settings to: 10.200.200.1,RC-04
+NET-020,Missing VLAN accounting database,Accounting workstation cannot ping gateway SVI. Inter-VLAN routing dropping packets on VLAN 44.,"{""nodes"":[{""id"":""pc1"",""name"":""Accounting-Client"",""type"":""PC"",""ip"":""10.44.44.15"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""ACCESS-SWITCH-06"",""type"":""Switch"",""ip"":""10.44.44.2"",""status"":""failed"",""x"":500,""y"":180,""interfaces"":[""Fa0/12""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""100 Mbps""}]}","ACCESS-SWITCH-06# show vlan brief
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Gi0/1
+10   Engineering                      active    Fa0/3
+20   Marketing                        active    Fa0/4",VLAN 44 database record is missing. FastEthernet0/12 is inactive and cannot forward packets.,Layer 2 (Data Link),L2 Switching,Medium,show run interface FastEthernet0/12,"configure terminal
+vlan 44
+name Accounting
+exit",RC-06
+NET-021,OSPF missing static route redistribute command,Autonomous system backbone routers cannot ping corporate border static default route.,"{""nodes"":[{""id"":""r1"",""name"":""OSPF-BORDER-RT"",""type"":""Router"",""ip"":""203.0.113.2"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Gi0/1""]},{""id"":""r2"",""name"":""OSPF-CORE-RT"",""type"":""Router"",""ip"":""10.1.1.1"",""status"":""active"",""x"":600,""y"":180,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""r1"",""target"":""r2"",""status"":""failed"",""bandwidth"":""1 Gbps (Route Missing)""}]}","OSPF-BORDER-RT# show ip route static
+S*   0.0.0.0/0 [1/0] via 203.0.113.1
+OSPF-BORDER-RT# show ip ospf database | include Default
+(Result: Empty - Default route not advertised!)",The border router OSPF process lacks the default-information originate statement to redistribute the ISP static default route to other routers.,Layer 3 (Network),L3 Routing,High,show running-config | section router ospf,"configure terminal
+router ospf 1
+default-information originate",RC-08
+NET-022,Wrong encapsulation sub-interface binding tag,VLAN 22 clients cannot negotiate DHCP or access router sub-interface.,"{""nodes"":[{""id"":""pc1"",""name"":""User-VLAN-22"",""type"":""PC"",""ip"":""10.22.22.15"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""ROUTER-01"",""type"":""Router"",""ip"":""10.22.22.1"",""status"":""warning"",""x"":500,""y"":180,""interfaces"":[""Gi0/0.22""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""1 Gbps (Sub-if Tag Error)""}]}","ROUTER-01# show running-config interface GigabitEthernet0/0.22
+interface GigabitEthernet0/0.22
+ encapsulation dot1Q 33 (MISCONFIGURED encapsulation bound to tag 33 instead of 22!)
+ ip address 10.22.22.1 255.255.255.0",A sub-interface VLAN encapsulation mismatch. dot1Q encapsulation tag is 33 instead of matching VLAN 22.,Layer 2 (Data Link),Inter-VLAN Routing,High,show interface GigabitEthernet0/0.22,"configure terminal
+interface GigabitEthernet0/0.22
+encapsulation dot1Q 22",RC-15
+NET-023,DHCP relay helper address missing on interface,Branch clients in VLAN 50 cannot fetch DHCP lease. Central DHCP server is up.,"{""nodes"":[{""id"":""pc1"",""name"":""Branch-PC-V50"",""type"":""PC"",""ip"":""169.254.20.1"",""status"":""failed"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""BRANCH-ROUTER-02"",""type"":""Router"",""ip"":""10.50.50.1"",""status"":""warning"",""x"":400,""y"":180,""interfaces"":[""Gi0/0.50""]},{""id"":""srv1"",""name"":""DHCP-Server"",""type"":""Server"",""ip"":""10.30.30.50"",""status"":""active"",""x"":700,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""100 Mbps (APIPA / No helper)""},{""source"":""r1"",""target"":""srv1"",""status"":""active"",""bandwidth"":""10 Gbps""}]}","BRANCH-ROUTER-02# show running-config interface GigabitEthernet0/0.50
+interface GigabitEthernet0/0.50
+ encapsulation dot1Q 50
+ ip address 10.50.50.1 255.255.255.0
+ (WARNING: No ip helper-address DHCP relay command configured!)",The VLAN 50 sub-interface lacks an 'ip helper-address' routing directive. DHCP broadcast requests cannot be unicast to the central DHCP server.,Layer 3 (Network),IPAM / DHCP,High,show ip protocols,"configure terminal
+interface GigabitEthernet0/0.50
+ip helper-address 10.30.30.50 (Forward DHCP broadcasts to server IP)",RC-11
+NET-024,NAT translation pool exhaustion,New branch office clients cannot browse outbound websites. Syslogs show translation pool full.,"{""nodes"":[{""id"":""pc1"",""name"":""Outbound-Client"",""type"":""PC"",""ip"":""192.168.10.15"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""BORDER-RT-02"",""type"":""Router"",""ip"":""192.168.10.1"",""status"":""warning"",""x"":450,""y"":180,""interfaces"":[""Gi0/0""]},{""id"":""srv1"",""name"":""Public-Web"",""type"":""Server"",""ip"":""1.1.1.1"",""status"":""failed"",""x"":800,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""active"",""bandwidth"":""1 Gbps""},{""source"":""r1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps (NAT Pool Exhausted)""}]}","BORDER-RT-02# show ip nat statistics
+Dynamic mappings:
+  -- Inside Source
+  [list 1 pool BRANCH-POOL] refcount 254
+  pool BRANCH-POOL: netmask 255.255.255.252
+    start 198.51.100.1 end 198.51.100.2
+    total addresses: 2, allocated: 2 (100% used)
+    translation creation failures: 1892 (Exhaustion!)","The outbound NAT translation pool BRANCH-POOL only contains 2 public IP addresses without 'overload' configured, causing allocation failure.",Layer 3 (Network),L3 NAT,High,show running-config | include ip nat,"configure terminal
+ip nat inside source list 1 pool BRANCH-POOL overload (Configure PAT to support multiple clients per IP)",RC-12
+NET-025,OSPF route advertisement area statement missing,Branch LAN routes are not advertised to CORE. Branch LAN cannot ping server.,"{""nodes"":[{""id"":""pc1"",""name"":""Branch-Client"",""type"":""PC"",""ip"":""192.168.1.15"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""BRANCH-RT-03"",""type"":""Router"",""ip"":""192.168.12.2"",""status"":""warning"",""x"":450,""y"":180,""interfaces"":[""Gi0/0""]},{""id"":""r2"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""192.168.12.1"",""status"":""active"",""x"":800,""y"":180,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""active"",""bandwidth"":""1 Gbps""},{""source"":""r1"",""target"":""r2"",""status"":""failed"",""bandwidth"":""10 Gbps (Subnet Route Missing)""}]}","BRANCH-RT-03# show running-config | section router ospf
+router ospf 1
+ router-id 3.3.3.3
+ network 192.168.12.0 0.0.0.3 area 0
+ (WARNING: Missing network 192.168.1.0 0.0.0.255 area 0 for local subnet!)","The branch LAN subnet 192.168.1.0/24 is missing from OSPF advertisements, so distant routing entities do not know how to route to it.",Layer 3 (Network),L3 Routing,High,show ip ospf interface brief,"configure terminal
+router ospf 1
+network 192.168.1.0 0.0.0.255 area 0",RC-08
+NET-026,Switchport native trunk VLAN leak,Cisco switch logging trunk native VLAN mismatch warnings on central management interface.,"{""nodes"":[{""id"":""sw1"",""name"":""ACCESS-SWITCH-05"",""type"":""Switch"",""ip"":""10.1.1.5"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Gi0/1""]},{""id"":""sw2"",""name"":""CORE-SWITCH-02"",""type"":""Switch"",""ip"":""10.1.1.1"",""status"":""warning"",""x"":600,""y"":180,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""sw1"",""target"":""sw2"",""status"":""failed"",""bandwidth"":""1 Gbps (VLAN Mismatch)""}]}","ACCESS-SWITCH-05# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Gi0/1       on               802.1q         trunking      5
+
+CORE-SWITCH-02# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Gi0/1       on               802.1q         trunking      1",The trunk link has inconsistent Native VLAN bindings (VLAN 5 vs VLAN 1). Untagged frames will leak cross-VLANs and create bridging loops.,Layer 2 (Data Link),L2 Trunking,Medium,show cdp neighbors detail,"configure terminal
+interface GigabitEthernet0/1
+switchport trunk native vlan 1",RC-07
+NET-027,ACL blocking domain name service UDP port 53,Corporate PCs can ping raw server IPs but report they cannot resolve local network domain names.,"{""nodes"":[{""id"":""pc1"",""name"":""Client-PC"",""type"":""PC"",""ip"":""10.10.10.15"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""sw1"",""name"":""CORE-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.2"",""status"":""warning"",""x"":400,""y"":180,""interfaces"":[""Vlan10""]},{""id"":""srv1"",""name"":""DNS-Server"",""type"":""Server"",""ip"":""10.30.30.50"",""status"":""failed"",""x"":700,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""sw1"",""status"":""active"",""bandwidth"":""100 Mbps""},{""source"":""sw1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps (DNS Blocked)""}]}","CORE-SWITCH-01# show ip access-lists SECURE-ACL
+Extended IP access list SECURE-ACL
+    10 deny udp any any eq 53 (match-count 2541)
+    20 permit ip any any","An active Access Control List blocking UDP port 53, preventing DNS requests and cutting off symbolic name resolution.",Layer 4 (Transport),Security,High,show running-config | include access-list,"configure terminal
+ip access-list extended SECURE-ACL
+no 10 (Remove explicit UDP DNS block)
+10 permit udp any any eq 53 (Allow DNS resolution dynamically)",RC-09
+NET-028,Switch virtual interface administratively down,Management access lost to distribution switch DIST-SWITCH-03. SVI gateway unreachable.,"{""nodes"":[{""id"":""sw1"",""name"":""DIST-SWITCH-03"",""type"":""Switch"",""ip"":""10.10.10.3"",""status"":""failed"",""x"":300,""y"":180,""interfaces"":[""Vlan10""]},{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.10.10.1"",""status"":""active"",""x"":600,""y"":180,""interfaces"":[""Gi0/0""]}],""links"":[{""source"":""sw1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""10 Gbps (SVI Shutdown)""}]}","DIST-SWITCH-03# show ip interface brief vlan 10
+Interface              IP-Address      OK? Status                Protocol
+Vlan10                 10.10.10.3      YES manual administratively down down","The Switch Virtual Interface for management VLAN 10 was left shut down, completely disabling remote management.",Layer 3 (Network),L2 Switching,High,show run interface Vlan10,"configure terminal
+interface Vlan10
+no shutdown",RC-01
+NET-029,Duplicate gateway SVI allocation conflict,Router SVI interface flap warning. Duplicate MAC warning on core distribution backbone.,"{""nodes"":[{""id"":""r1"",""name"":""CORE-ROUTER-01"",""type"":""Router"",""ip"":""10.10.10.1"",""status"":""failed"",""x"":200,""y"":180,""interfaces"":[""Gi0/0""]},{""id"":""sw1"",""name"":""DIST-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.1"",""status"":""warning"",""x"":600,""y"":180,""interfaces"":[""Vlan10""]}],""links"":[{""source"":""r1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""10 Gbps (IP Conflict)""}]}","DIST-SWITCH-01# show logging | include Duplicate
+%IP-4-DUPADDR: Duplicate IP address 10.10.10.1 on Vlan10, sourced by mac address 00ee.ffff.1122","A rogue host or secondary router SVI has been misconfigured with the primary gateway address: 10.10.10.1, creating an ARP conflict loop.",Layer 3 (Network),IPAM,Critical,show mac address-table address 00ee.ffff.1122,"Track port learning MAC 00ee.ffff.1122 and shut down offending interface, or reallocate SVI IP.",RC-05
+NET-030,ACL blocking outgoing domain lookup,Internal office subnet unable to resolve external websites. Ping by name failing.,"{""nodes"":[{""id"":""pc1"",""name"":""User-Client"",""type"":""PC"",""ip"":""192.168.10.15"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Fa0/1""]},{""id"":""r1"",""name"":""BORDER-ROUTER-01"",""type"":""Router"",""ip"":""192.168.10.1"",""status"":""warning"",""x"":500,""y"":180,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""pc1"",""target"":""r1"",""status"":""failed"",""bandwidth"":""1 Gbps (DNS Blocked)""}]}","BORDER-ROUTER-01# show ip access-lists
+Extended IP access list OUTBOUND-FILTER
+    10 deny udp any any eq domain (match-count 1204)
+    20 permit ip any any",An outbound filter ACL blocks TCP/UDP DNS queries (domain / Port 53) on BORDER-ROUTER-01 GigabitEthernet0/1.,Layer 4 (Transport),Security,Medium,show running-config interface GigabitEthernet0/1,"configure terminal
+ip access-list extended OUTBOUND-FILTER
+no 10 (Allow outgoing domain name queries)",RC-09
+NET-031,Wireless client unable to obtain DHCP address,"Guest laptop connecting to wireless SSID Corp-WLAN is stuck with an APIPA address (169.254.x.x) and cannot reach default gateway.","{""nodes"":[{""id"":""pc1"",""name"":""Wireless-Laptop"",""type"":""PC"",""ip"":""169.254.100.22"",""vlan"":""VLAN 80"",""status"":""failed"",""x"":100,""y"":320,""interfaces"":[""Wlan0""]},{""id"":""ap1"",""name"":""LAP-OFFICE-01"",""type"":""Router"",""ip"":""10.80.80.2"",""status"":""active"",""x"":400,""y"":180,""interfaces"":[""Gig0""]},{""id"":""srv1"",""name"":""Corp-DHCP"",""type"":""Server"",""ip"":""10.30.30.50"",""status"":""active"",""x"":700,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""ap1"",""status"":""failed"",""bandwidth"":""54 Mbps (No DHCP)""},{""source"":""ap1"",""target"":""srv1"",""status"":""active"",""bandwidth"":""1 Gbps""}]}","WLC-01# show wlan 1
+SSID: Corp-WLAN
+VLAN Identifier: 80
+CORE-ROUTER-01# show running-config interface GigabitEthernet0/0.80
+interface GigabitEthernet0/0.80
+ encapsulation dot1Q 80
+ ip address 10.80.80.1 255.255.255.0
+ (WARNING: No ip helper-address command configured!)","The wireless client's VLAN 80 sub-interface lacks an 'ip helper-address' directive to forward DHCP broadcasts to the central DHCP server.","Layer 3 (Network)","Wireless / DHCP","High","show running-config interface GigabitEthernet0/0.80","configure terminal
+interface GigabitEthernet0/0.80
+ip helper-address 10.30.30.50","RC-11"
+NET-032,Incorrect WLAN VLAN mapping,"Clients connecting to Staff-Wifi cannot reach the corporate intranet. The WLC reports traffic is bound to VLAN 99 but that VLAN is missing on the switchports.","{""nodes"":[{""id"":""pc1"",""name"":""Staff-Smartphone"",""type"":""PC"",""ip"":""10.99.99.15"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Wlan0""]},{""id"":""wlc1"",""name"":""CORP-WLC-01"",""type"":""Switch"",""ip"":""10.10.10.25"",""status"":""warning"",""x"":500,""y"":180,""interfaces"":[""Po1""]}],""links"":[{""source"":""pc1"",""target"":""wlc1"",""status"":""failed"",""bandwidth"":""300 Mbps (Missing VLAN)""}]}","CORP-WLC-01# show wlan summary
+WLAN ID  SSID             Interface/Interface Group
+1        Staff-Wifi       VLAN99
+ACCESS-SWITCH-01# show vlan brief
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2
+10   Engineering                      active    Fa0/3
+(VLAN 99 is missing from the switch database!)","The Staff-Wifi WLAN is mapped to VLAN 99 but VLAN 99 does not exist in the access switch local database, causing all associated traffic to be dropped.","Layer 2 (Data Link)","Wireless / VLAN","High","show vlan brief","configure terminal
+vlan 99
+name Staff-VLAN
+exit","RC-06"
+NET-033,AP / WLC connectivity failure,"Lightweight AP in the warehouse fails to join the centralized Wireless LAN Controller, remaining in a continuous discovery loop.","{""nodes"":[{""id"":""ap1"",""name"":""LAP-WH-02"",""type"":""PC"",""ip"":""10.20.20.14"",""status"":""failed"",""x"":150,""y"":320,""interfaces"":[""Fa0""]},{""id"":""wlc1"",""name"":""CORP-WLC-01"",""type"":""Switch"",""ip"":""10.10.10.25"",""status"":""active"",""x"":500,""y"":180,""interfaces"":[""Gi0/1""]}],""links"":[{""source"":""ap1"",""target"":""wlc1"",""status"":""failed"",""bandwidth"":""100 Mbps (No CAPWAP)""}]}","LAP-WH-02# show capwap client state
+CAPWAP State: Discovery
+%CAPWAP-3-ERROR_HANDSHAKE: Failed to join WLC. DHCP Option 43 is missing from DHCP Pool.
+WLC-01# show ap join stats
+No lightweight APs are currently joined in the database.","Lightweight AP cannot join the controller because the DHCP pool lacks Option 43 which advertises the WLC IP address.","Layer 3 (Network)","Wireless","High","show ip dhcp pool","configure terminal
+ip dhcp pool AP-POOL
+option 43 hex f1040a0a0a19","RC-10"
+NET-034,Guest wireless isolation failure,"WLAN guest clients are able to ping the corporate database server. The guest network anchor controller or gateway is missing access list rules.","{""nodes"":[{""id"":""pc1"",""name"":""Guest-Laptop"",""type"":""PC"",""ip"":""172.16.200.15"",""status"":""active"",""x"":100,""y"":320,""interfaces"":[""Wlan0""]},{""id"":""wlc1"",""name"":""GUEST-ANCHOR"",""type"":""Switch"",""ip"":""172.16.200.25"",""status"":""warning"",""x"":450,""y"":180,""interfaces"":[""Gi0/1""]},{""id"":""srv1"",""name"":""CORP-DB"",""type"":""Server"",""ip"":""10.50.50.100"",""status"":""failed"",""x"":800,""y"":320,""interfaces"":[""Gi1/1""]}],""links"":[{""source"":""pc1"",""target"":""wlc1"",""status"":""active"",""bandwidth"":""54 Mbps""},{""source"":""wlc1"",""target"":""srv1"",""status"":""failed"",""bandwidth"":""1 Gbps (Security Leak)""}]}","GUEST-ANCHOR# show ip access-lists
+Extended IP access list GUEST-ACL
+    10 permit ip any any
+(WARNING: Access list permits guest access to corporate network 10.0.0.0/8!)","The guest access controller lacks filtering rules to isolate guest wireless clients from the corporate private network ranges.","Layer 4 (Transport)","Wireless / Security","Medium","show running-config interface GigabitEthernet0/1","configure terminal
+ip access-list extended GUEST-ACL
+10 deny ip any 10.0.0.0 0.255.255.255
+20 permit ip any any","RC-09"
+NET-035,Wireless VLAN / trunk issue,"Centralized WLC cannot reach core subnet. Switchport GigabitEthernet0/24 trunk allowed list is missing wireless VLAN 80.","{""nodes"":[{""id"":""wlc1"",""name"":""CORP-WLC"",""type"":""Switch"",""ip"":""10.80.80.25"",""status"":""warning"",""x"":200,""y"":180,""interfaces"":[""Gi0/1""]},{""id"":""sw1"",""name"":""CORE-SWITCH-01"",""type"":""Switch"",""ip"":""10.10.10.2"",""status"":""active"",""x"":600,""y"":180,""interfaces"":[""Gi0/24""]}],""links"":[{""source"":""wlc1"",""target"":""sw1"",""status"":""failed"",""bandwidth"":""1 Gbps (Trunk VLAN Mismatch)""}]}","CORE-SWITCH-01# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Gi0/24      on               802.1q         trunking      1
+Port        Vlans allowed on trunk
+Gi0/24      1,10,20,30
+(WARNING: VLAN 80 is not in the allowed list on the trunk port!)","The trunk link interface is missing VLAN 80 in its trunk allowed VLAN list, blocking all wireless client traffic from reaching the network core.","Layer 2 (Data Link)","Wireless / VLAN","High","show interfaces trunk","configure terminal
+interface GigabitEthernet0/24
+switchport trunk allowed vlan add 80","RC-07"

@@ -1,0 +1,6 @@
+{
+  "name": "NetSage AI",
+  "description": "An enterprise-grade, Cisco-inspired network troubleshooting assistant providing real-time AI network diagnostics, rule validations, interactive topology maps, and raw CLI terminal emulation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

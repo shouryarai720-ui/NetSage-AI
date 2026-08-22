@@ -1,0 +1,302 @@
+[
+  {
+    "case_id": "NET-001",
+    "title": "Inter-VLAN routing sub-interface administratively down",
+    "symptom": "PC1 cannot reach Server1 in VLAN 30. Router-on-a-stick configuration seems broken on GigabitEthernet0/0.30.",
+    "expected_fault": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prevents routing gateway operations for VLAN 30 clients.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "Inter-VLAN Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-01"
+  },
+  {
+    "case_id": "NET-002",
+    "title": "Access layer physical interface protocol down",
+    "symptom": "PC2 has completely lost physical and logical connectivity to local access switch. Cable or port hardware suspected.",
+    "expected_fault": "The physical cable to FastEthernet0/12 is disconnected, damaged, or the network interface card on the PC side is powered off.",
+    "expected_osi_layer": "Layer 1 (Physical)",
+    "concept_tag": "L1 Physical",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-02"
+  },
+  {
+    "case_id": "NET-003",
+    "title": "Duplicate IP address conflict on server vlan",
+    "symptom": "Critical ERP system Server1 is experiencing intermittent dropouts. Logs show ARP conflict warnings.",
+    "expected_fault": "A static IP conflict exists on the network. An rogue host or secondary device has been misconfigured with the IP address of the core server: 10.30.30.50.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM",
+    "severity": "Critical",
+    "expected_rule_ids": "RC-05"
+  },
+  {
+    "case_id": "NET-004",
+    "title": "OSPF link subnet mask mismatch",
+    "symptom": "OSPF neighborhood cannot form between CORE-ROUTER and BRANCH-RT. Stuck in INIT state.",
+    "expected_fault": "OSPF neighbor adjacencies require subnet masks to match on broadcast links. The mask /29 on BRANCH-RT-01 conflicts with /24 on CORE-ROUTER-01.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-03"
+  },
+  {
+    "case_id": "NET-005",
+    "title": "PC Default Gateway IP mismatch",
+    "symptom": "PC3 can ping local switch SVI but cannot browse or ping external internet servers.",
+    "expected_fault": "A gateway IP mismatch on the client. The PC static default gateway configuration has a typo pointing to 10.10.10.254 instead of 10.10.10.1.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM / Gateway",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-04"
+  },
+  {
+    "case_id": "NET-006",
+    "title": "Missing VLAN database entry on access switch",
+    "symptom": "Accounting PCs in VLAN 20 are completely isolated from the switch and router trunk link.",
+    "expected_fault": "VLAN 20 was assigned to access ports but has never been added to the switch VLAN database. Ports in non-existent VLANs are kept inactive.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "L2 Switching",
+    "severity": "High",
+    "expected_rule_ids": "RC-06"
+  },
+  {
+    "case_id": "NET-007",
+    "title": "Native VLAN trunk mismatch",
+    "symptom": "Cisco switches reporting native VLAN mismatch messages on syslog. Trunk link performance degraded.",
+    "expected_fault": "A native VLAN mismatch exists on Gi0/1 trunk. Frames sent unencapsulated on Native VLAN 10 from Dist switch will be received in Native VLAN 99 on Access switch, creating cross-VLAN leaks.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "L2 Trunking",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-07"
+  },
+  {
+    "case_id": "NET-008",
+    "title": "Missing static route for network gateway",
+    "symptom": "Headquarters cannot reach newly configured Branch subnet 192.168.50.0/24.",
+    "expected_fault": "There is no static or dynamic route in the HQ-ROUTER-01 routing table for Branch subnet 192.168.50.0/24. Routing lookup fails and drops traffic.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-08"
+  },
+  {
+    "case_id": "NET-009",
+    "title": "Standard ACL blocking web port traffic",
+    "symptom": "Clients in VLAN 10 report they cannot access HTTP/HTTPS services hosted on local core DMZ servers.",
+    "expected_fault": "Access-list 101 is configured with a broad Standard ACL blocking all IP traffic from 10.10.10.0/24. This cuts off web traffic (port 80/443) which requires an Extended ACL.",
+    "expected_osi_layer": "Layer 4 (Transport)",
+    "concept_tag": "Security",
+    "severity": "High",
+    "expected_rule_ids": "RC-09"
+  },
+  {
+    "case_id": "NET-010",
+    "title": "DHCP address pool exhausted",
+    "symptom": "New devices in the conference room are failing to acquire an IP address. They default to APIPA (169.254.x.x).",
+    "expected_fault": "The DHCP address scope 192.168.20.0/28 is too small. With only 11 usable addresses, new conference room hosts cannot acquire IP leases.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM / DHCP",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-10"
+  },
+  {
+    "case_id": "NET-011",
+    "title": "NAT translation rule misconfiguration",
+    "symptom": "Internal office LAN devices cannot access public internet or resolve DNS root domains.",
+    "expected_fault": "The border gateway interface GigabitEthernet0/1 connected to the public ISP router is missing the 'ip nat outside' command. Address translation failed.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 NAT",
+    "severity": "High",
+    "expected_rule_ids": "RC-14"
+  },
+  {
+    "case_id": "NET-012",
+    "title": "Wrong 802.1Q sub-interface encapsulation",
+    "symptom": "PC4 in VLAN 40 cannot establish TCP connections. Checking VLAN binding encapsulation.",
+    "expected_fault": "A VLAN tag ID mismatch. The sub-interface GigabitEthernet0/0.40 is encapsulated for VLAN 50, dropping all VLAN 40 packets.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "Inter-VLAN Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-15"
+  },
+  {
+    "case_id": "NET-013",
+    "title": "Access port safety Port-Security errdisable",
+    "symptom": "User moved cables and suddenly lost access. Switchport Gi0/4 LED is solid amber.",
+    "expected_fault": "An unauthorized MAC address was connected to GigabitEthernet0/4. The switchport triggered its port-security violation rule and entered 'err-disabled' status.",
+    "expected_osi_layer": "Layer 1 (Physical)",
+    "concept_tag": "L1 Physical",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-13"
+  },
+  {
+    "case_id": "NET-014",
+    "title": "Wrong subnet mask assignment on core link",
+    "symptom": "Core router cannot reach distribution switch SVI. Link status up but ping failing.",
+    "expected_fault": "A subnet mask mismatch. The router SVI/interface has a 30-bit mask, causing it to reject IP packets from 10.100.100.2 as outside its range.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-03"
+  },
+  {
+    "case_id": "NET-015",
+    "title": "VLAN mismatch on distribution port-channel",
+    "symptom": "Distribution aggregation trunks dropping database synchronization frames.",
+    "expected_fault": "Native VLAN mismatch on the active EtherChannel trunk interface Port-Channel 1. This leaks spanning-tree and administration traffic.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "L2 Trunking",
+    "severity": "High",
+    "expected_rule_ids": "RC-07"
+  },
+  {
+    "case_id": "NET-016",
+    "title": "Administratively down core backbone trunk interface",
+    "symptom": "Redundant link between Core and Distribution switches completely dark. No traffic throughput.",
+    "expected_fault": "The GigabitEthernet0/24 interface on the core switch has been administratively disabled, disabling link aggregation failover.",
+    "expected_osi_layer": "Layer 1 (Physical)",
+    "concept_tag": "L1 Physical",
+    "severity": "Critical",
+    "expected_rule_ids": "RC-01"
+  },
+  {
+    "case_id": "NET-017",
+    "title": "Duplicate gateway SVI IP assignment",
+    "symptom": "Corporate router gateway is flapping on ARP cache tables. MAC address conflicts occurring.",
+    "expected_fault": "An access-layer switch SVI or rogue administrator has configured their interface with the gateway IP 10.1.1.1, interrupting routing.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM",
+    "severity": "Critical",
+    "expected_rule_ids": "RC-05"
+  },
+  {
+    "case_id": "NET-018",
+    "title": "ACL denying essential secure shell port 22",
+    "symptom": "Network administrators cannot connect via SSH to core switches to manage VLAN databases.",
+    "expected_fault": "An active access control list INGRESS-FILTER is blocking all SSH connections (TCP Port 22), preventing remote administration.",
+    "expected_osi_layer": "Layer 4 (Transport)",
+    "concept_tag": "Security",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-09"
+  },
+  {
+    "case_id": "NET-019",
+    "title": "Gateway mismatch on finance server network",
+    "symptom": "Finance file server fails to execute scheduled backups to the main backup cloud system.",
+    "expected_fault": "A gateway SVI IP mismatch. The finance server is statically configured with an incorrect default gateway IP of 10.200.200.2.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM / Gateway",
+    "severity": "High",
+    "expected_rule_ids": "RC-04"
+  },
+  {
+    "case_id": "NET-020",
+    "title": "Missing VLAN accounting database",
+    "symptom": "Accounting workstation cannot ping gateway SVI. Inter-VLAN routing dropping packets on VLAN 44.",
+    "expected_fault": "VLAN 44 database record is missing. FastEthernet0/12 is inactive and cannot forward packets.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "L2 Switching",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-06"
+  },
+  {
+    "case_id": "NET-021",
+    "title": "OSPF missing static route redistribute command",
+    "symptom": "Autonomous system backbone routers cannot ping corporate border static default route.",
+    "expected_fault": "The border router OSPF process lacks the default-information originate statement to redistribute the ISP static default route to other routers.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-08"
+  },
+  {
+    "case_id": "NET-022",
+    "title": "Wrong encapsulation sub-interface binding tag",
+    "symptom": "VLAN 22 clients cannot negotiate DHCP or access router sub-interface.",
+    "expected_fault": "A sub-interface VLAN encapsulation mismatch. dot1Q encapsulation tag is 33 instead of matching VLAN 22.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "Inter-VLAN Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-15"
+  },
+  {
+    "case_id": "NET-023",
+    "title": "DHCP relay helper address missing on interface",
+    "symptom": "Branch clients in VLAN 50 cannot fetch DHCP lease. Central DHCP server is up.",
+    "expected_fault": "The VLAN 50 sub-interface lacks an 'ip helper-address' routing directive. DHCP broadcast requests cannot be unicast to the central DHCP server.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM / DHCP",
+    "severity": "High",
+    "expected_rule_ids": "RC-11"
+  },
+  {
+    "case_id": "NET-024",
+    "title": "NAT translation pool exhaustion",
+    "symptom": "New branch office clients cannot browse outbound websites. Syslogs show translation pool full.",
+    "expected_fault": "The outbound NAT translation pool BRANCH-POOL only contains 2 public IP addresses without 'overload' configured, causing allocation failure.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 NAT",
+    "severity": "High",
+    "expected_rule_ids": "RC-12"
+  },
+  {
+    "case_id": "NET-025",
+    "title": "OSPF route advertisement area statement missing",
+    "symptom": "Branch LAN routes are not advertised to CORE. Branch LAN cannot ping server.",
+    "expected_fault": "The branch LAN subnet 192.168.1.0/24 is missing from OSPF advertisements, so distant routing entities do not know how to route to it.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L3 Routing",
+    "severity": "High",
+    "expected_rule_ids": "RC-08"
+  },
+  {
+    "case_id": "NET-026",
+    "title": "Switchport native trunk VLAN leak",
+    "symptom": "Cisco switch logging trunk native VLAN mismatch warnings on central management interface.",
+    "expected_fault": "The trunk link has inconsistent Native VLAN bindings (VLAN 5 vs VLAN 1). Untagged frames will leak cross-VLANs and create bridging loops.",
+    "expected_osi_layer": "Layer 2 (Data Link)",
+    "concept_tag": "L2 Trunking",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-07"
+  },
+  {
+    "case_id": "NET-027",
+    "title": "ACL blocking domain name service UDP port 53",
+    "symptom": "Corporate PCs can ping raw server IPs but report they cannot resolve local network domain names.",
+    "expected_fault": "An active Access Control List blocking UDP port 53, preventing DNS requests and cutting off symbolic name resolution.",
+    "expected_osi_layer": "Layer 4 (Transport)",
+    "concept_tag": "Security",
+    "severity": "High",
+    "expected_rule_ids": "RC-09"
+  },
+  {
+    "case_id": "NET-028",
+    "title": "Switch virtual interface administratively down",
+    "symptom": "Management access lost to distribution switch DIST-SWITCH-03. SVI gateway unreachable.",
+    "expected_fault": "The Switch Virtual Interface for management VLAN 10 was left shut down, completely disabling remote management.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "L2 Switching",
+    "severity": "High",
+    "expected_rule_ids": "RC-01"
+  },
+  {
+    "case_id": "NET-029",
+    "title": "Duplicate gateway SVI allocation conflict",
+    "symptom": "Router SVI interface flap warning. Duplicate MAC warning on core distribution backbone.",
+    "expected_fault": "A rogue host or secondary router SVI has been misconfigured with the primary gateway address: 10.10.10.1, creating an ARP conflict loop.",
+    "expected_osi_layer": "Layer 3 (Network)",
+    "concept_tag": "IPAM",
+    "severity": "Critical",
+    "expected_rule_ids": "RC-05"
+  },
+  {
+    "case_id": "NET-030",
+    "title": "ACL blocking outgoing domain lookup",
+    "symptom": "Internal office subnet unable to resolve external websites. Ping by name failing.",
+    "expected_fault": "An outbound filter ACL blocks TCP/UDP DNS queries (domain / Port 53) on BORDER-ROUTER-01 GigabitEthernet0/1.",
+    "expected_osi_layer": "Layer 4 (Transport)",
+    "concept_tag": "Security",
+    "severity": "Medium",
+    "expected_rule_ids": "RC-09"
+  }
+]

@@ -1,0 +1,641 @@
+{
+  "timestamp": "2026-08-21T11:03:32.819Z",
+  "dataset_file": "data/cases.csv",
+  "total_cases": 35,
+  "passed_cases": 35,
+  "failed_cases": 0,
+  "false_positives": 0,
+  "false_negatives": 0,
+  "cases": [
+    {
+      "case_id": "NET-001",
+      "title": "Inter-VLAN routing sub-interface administratively down",
+      "concept_tag": "Inter-VLAN Routing",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-01"
+      ],
+      "triggered_rule_ids": [
+        "RC-01"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-002",
+      "title": "Access layer physical interface protocol down",
+      "concept_tag": "L1 Physical",
+      "severity": "Medium",
+      "osi_layer": "Layer 1 (Physical)",
+      "expected_rule_ids": [
+        "RC-02"
+      ],
+      "triggered_rule_ids": [
+        "RC-02"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-003",
+      "title": "Duplicate IP address conflict on server vlan",
+      "concept_tag": "IPAM",
+      "severity": "Critical",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-05"
+      ],
+      "triggered_rule_ids": [
+        "RC-05"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-004",
+      "title": "OSPF link subnet mask mismatch",
+      "concept_tag": "L3 Routing",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-03"
+      ],
+      "triggered_rule_ids": [
+        "RC-03"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-005",
+      "title": "PC Default Gateway IP mismatch",
+      "concept_tag": "IPAM / Gateway",
+      "severity": "Medium",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-04"
+      ],
+      "triggered_rule_ids": [
+        "RC-04"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-006",
+      "title": "Missing VLAN database entry on access switch",
+      "concept_tag": "L2 Switching",
+      "severity": "High",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-06"
+      ],
+      "triggered_rule_ids": [
+        "RC-06"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-007",
+      "title": "Native VLAN trunk mismatch",
+      "concept_tag": "L2 Trunking",
+      "severity": "Medium",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-07"
+      ],
+      "triggered_rule_ids": [
+        "RC-07"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-008",
+      "title": "Missing static route for network gateway",
+      "concept_tag": "L3 Routing",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-08"
+      ],
+      "triggered_rule_ids": [
+        "RC-08"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-009",
+      "title": "Standard ACL blocking web port traffic",
+      "concept_tag": "Security",
+      "severity": "High",
+      "osi_layer": "Layer 4 (Transport)",
+      "expected_rule_ids": [
+        "RC-09"
+      ],
+      "triggered_rule_ids": [
+        "RC-09"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-010",
+      "title": "DHCP address pool exhausted",
+      "concept_tag": "IPAM / DHCP",
+      "severity": "Medium",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-10"
+      ],
+      "triggered_rule_ids": [
+        "RC-10"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-011",
+      "title": "NAT translation rule misconfiguration",
+      "concept_tag": "L3 NAT",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-14"
+      ],
+      "triggered_rule_ids": [
+        "RC-14"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-012",
+      "title": "Wrong 802.1Q sub-interface encapsulation",
+      "concept_tag": "Inter-VLAN Routing",
+      "severity": "High",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-15"
+      ],
+      "triggered_rule_ids": [
+        "RC-15"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-013",
+      "title": "Access port safety Port-Security errdisable",
+      "concept_tag": "L1 Physical",
+      "severity": "Medium",
+      "osi_layer": "Layer 1 (Physical)",
+      "expected_rule_ids": [
+        "RC-13"
+      ],
+      "triggered_rule_ids": [
+        "RC-13"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-014",
+      "title": "Wrong subnet mask assignment on core link",
+      "concept_tag": "L3 Routing",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-03"
+      ],
+      "triggered_rule_ids": [
+        "RC-03"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-015",
+      "title": "VLAN mismatch on distribution port-channel",
+      "concept_tag": "L2 Trunking",
+      "severity": "High",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-07"
+      ],
+      "triggered_rule_ids": [
+        "RC-07"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-016",
+      "title": "Administratively down core backbone trunk interface",
+      "concept_tag": "L1 Physical",
+      "severity": "Critical",
+      "osi_layer": "Layer 1 (Physical)",
+      "expected_rule_ids": [
+        "RC-01"
+      ],
+      "triggered_rule_ids": [
+        "RC-01"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-017",
+      "title": "Duplicate gateway SVI IP assignment",
+      "concept_tag": "IPAM",
+      "severity": "Critical",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-05"
+      ],
+      "triggered_rule_ids": [
+        "RC-05"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-018",
+      "title": "ACL denying essential secure shell port 22",
+      "concept_tag": "Security",
+      "severity": "Medium",
+      "osi_layer": "Layer 4 (Transport)",
+      "expected_rule_ids": [
+        "RC-09"
+      ],
+      "triggered_rule_ids": [
+        "RC-09"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-019",
+      "title": "Gateway mismatch on finance server network",
+      "concept_tag": "IPAM / Gateway",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-04"
+      ],
+      "triggered_rule_ids": [
+        "RC-04"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-020",
+      "title": "Missing VLAN accounting database",
+      "concept_tag": "L2 Switching",
+      "severity": "Medium",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-06"
+      ],
+      "triggered_rule_ids": [
+        "RC-06"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-021",
+      "title": "OSPF missing static route redistribute command",
+      "concept_tag": "L3 Routing",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-08"
+      ],
+      "triggered_rule_ids": [
+        "RC-08"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-022",
+      "title": "Wrong encapsulation sub-interface binding tag",
+      "concept_tag": "Inter-VLAN Routing",
+      "severity": "High",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-15"
+      ],
+      "triggered_rule_ids": [
+        "RC-15"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-023",
+      "title": "DHCP relay helper address missing on interface",
+      "concept_tag": "IPAM / DHCP",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-11"
+      ],
+      "triggered_rule_ids": [
+        "RC-11"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-024",
+      "title": "NAT translation pool exhaustion",
+      "concept_tag": "L3 NAT",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-12"
+      ],
+      "triggered_rule_ids": [
+        "RC-12"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-025",
+      "title": "OSPF route advertisement area statement missing",
+      "concept_tag": "L3 Routing",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-08"
+      ],
+      "triggered_rule_ids": [
+        "RC-08"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-026",
+      "title": "Switchport native trunk VLAN leak",
+      "concept_tag": "L2 Trunking",
+      "severity": "Medium",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-07"
+      ],
+      "triggered_rule_ids": [
+        "RC-07"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-027",
+      "title": "ACL blocking domain name service UDP port 53",
+      "concept_tag": "Security",
+      "severity": "High",
+      "osi_layer": "Layer 4 (Transport)",
+      "expected_rule_ids": [
+        "RC-09"
+      ],
+      "triggered_rule_ids": [
+        "RC-09"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-028",
+      "title": "Switch virtual interface administratively down",
+      "concept_tag": "L2 Switching",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-01"
+      ],
+      "triggered_rule_ids": [
+        "RC-01"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-029",
+      "title": "Duplicate gateway SVI allocation conflict",
+      "concept_tag": "IPAM",
+      "severity": "Critical",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-05"
+      ],
+      "triggered_rule_ids": [
+        "RC-05"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-030",
+      "title": "ACL blocking outgoing domain lookup",
+      "concept_tag": "Security",
+      "severity": "Medium",
+      "osi_layer": "Layer 4 (Transport)",
+      "expected_rule_ids": [
+        "RC-09"
+      ],
+      "triggered_rule_ids": [
+        "RC-09"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-031",
+      "title": "Wireless client unable to obtain DHCP address",
+      "concept_tag": "Wireless / DHCP",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-11"
+      ],
+      "triggered_rule_ids": [
+        "RC-11"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-032",
+      "title": "Incorrect WLAN VLAN mapping",
+      "concept_tag": "Wireless / VLAN",
+      "severity": "High",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-06"
+      ],
+      "triggered_rule_ids": [
+        "RC-06"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-033",
+      "title": "AP / WLC connectivity failure",
+      "concept_tag": "Wireless",
+      "severity": "High",
+      "osi_layer": "Layer 3 (Network)",
+      "expected_rule_ids": [
+        "RC-10"
+      ],
+      "triggered_rule_ids": [
+        "RC-10"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-034",
+      "title": "Guest wireless isolation failure",
+      "concept_tag": "Wireless / Security",
+      "severity": "Medium",
+      "osi_layer": "Layer 4 (Transport)",
+      "expected_rule_ids": [
+        "RC-09"
+      ],
+      "triggered_rule_ids": [
+        "RC-09"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    },
+    {
+      "case_id": "NET-035",
+      "title": "Wireless VLAN / trunk issue",
+      "concept_tag": "Wireless / VLAN",
+      "severity": "High",
+      "osi_layer": "Layer 2 (Data Link)",
+      "expected_rule_ids": [
+        "RC-07"
+      ],
+      "triggered_rule_ids": [
+        "RC-07"
+      ],
+      "deterministic_status": "PASS",
+      "ai_schema_status": "PASS",
+      "ai_grounding_status": "PASS",
+      "passed": true,
+      "failure_reasons": []
+    }
+  ]
+}

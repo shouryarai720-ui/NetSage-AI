@@ -1,0 +1,79 @@
+{
+  "verificationDate": "2026-08-22T16:11:10.405Z",
+  "commit": "338fb6762d78aa358d09f499ef7ae7cff5b32792",
+  "browser": "Chromium 151.0 (Playwright Headless)",
+  "environment": {
+    "os": "linux x64",
+    "node": "v22.23.1",
+    "appUrl": "http://localhost:3000"
+  },
+  "totalTests": 12,
+  "passed": 12,
+  "failed": 0,
+  "skipped": 0,
+  "passRate": "100.0%",
+  "durationMs": 52989,
+  "overallStatus": "PASS",
+  "workflows": [
+    {
+      "name": "Application boots successfully with valid title, layout, and zero console errors",
+      "status": "PASS",
+      "durationMs": 2896
+    },
+    {
+      "name": "Navigates across all enterprise NOC workspace sections seamlessly without crashing",
+      "status": "PASS",
+      "durationMs": 6556
+    },
+    {
+      "name": "Loads dataset cases, verifies case count, search filter, and case selection navigation",
+      "status": "PASS",
+      "durationMs": 3694
+    },
+    {
+      "name": "Executes end-to-end diagnostic workflow: rule engine, evidence grounding, structured AI output, and OSI layer detection",
+      "status": "PASS",
+      "durationMs": 4397
+    },
+    {
+      "name": "Operator accepts proposed AI remediation, updates state to Approved, and generates audit record",
+      "status": "PASS",
+      "durationMs": 3857
+    },
+    {
+      "name": "Operator edits proposed remediation, provides mandatory reason, commits override to ledger",
+      "status": "PASS",
+      "durationMs": 4375
+    },
+    {
+      "name": "Rejection requires mandatory reason, blocks empty submissions, updates UI to rejected, and records audit entry",
+      "status": "PASS",
+      "durationMs": 4483
+    },
+    {
+      "name": "Renders immutable audit ledger, validates cryptographic chain, and detects integrity tampering",
+      "status": "PASS",
+      "durationMs": 3306
+    },
+    {
+      "name": "Renders report catalog, verifies case metrics, and triggers PDF audit export successfully",
+      "status": "PASS",
+      "durationMs": 2798
+    },
+    {
+      "name": "Displays comprehensive Responsible AI safety pillars, evidence grounding rules, and zero-hallucination policies",
+      "status": "PASS",
+      "durationMs": 2603
+    },
+    {
+      "name": "Gracefully handles invalid inputs, non-existent cases, and malformed requests with friendly responses",
+      "status": "PASS",
+      "durationMs": 2192
+    },
+    {
+      "name": "Renders cleanly at desktop (1280x720) and tablet viewports without visual clipping",
+      "status": "PASS",
+      "durationMs": 3996
+    }
+  ]
+}

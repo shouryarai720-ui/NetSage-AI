@@ -1,0 +1,148 @@
+{
+  "systemName": "NetSage AI",
+  "version": "2.4.0",
+  "environment": "SIMULATION / LAB MODE",
+  "targetPlatforms": [
+    "Cisco IOS 15.x",
+    "Cisco IOS 17.x",
+    "Cisco Packet Tracer 8.x"
+  ],
+  "supportedDomains": [
+    "VLAN",
+    "Gateway",
+    "DHCP",
+    "DNS",
+    "Routing",
+    "ACL",
+    "NAT",
+    "Wireless"
+  ],
+  "supportedOsiLayers": [
+    "Layer 1 (Physical)",
+    "Layer 2 (Data Link)",
+    "Layer 3 (Network)",
+    "Layer 4 (Transport)",
+    "Layer 5 (Session)",
+    "Layer 6 (Presentation)",
+    "Layer 7 (Application)"
+  ],
+  "rules": {
+    "RC-01": {
+      "name": "Administratively Down Interface",
+      "category": "Routing",
+      "severity": "Critical",
+      "layer": "Layer 3 (Network)",
+      "description": "Detects when a network interface has been manually disabled with a shutdown directive."
+    },
+    "RC-02": {
+      "name": "Physical Line Protocol Check",
+      "category": "Security",
+      "severity": "High",
+      "layer": "Layer 1 (Physical)",
+      "description": "Checks if physical carrier signal or line protocol is down."
+    },
+    "RC-03": {
+      "name": "Subnet Mask Mismatch Check",
+      "category": "IPAM",
+      "severity": "High",
+      "layer": "Layer 3 (Network)",
+      "description": "Detects subnet mask discrepancies on point-to-point links or interface segments."
+    },
+    "RC-04": {
+      "name": "Default Gateway Validation",
+      "category": "IPAM",
+      "severity": "High",
+      "layer": "Layer 3 (Network)",
+      "description": "Ensures default gateway assignments point to reachable and correctly matched interfaces."
+    },
+    "RC-05": {
+      "name": "Duplicate IP Address Conflict",
+      "category": "IPAM",
+      "severity": "Critical",
+      "layer": "Layer 3 (Network)",
+      "description": "Detects duplicate IP addresses on a segment via ARP conflicts or syslog DUPADDR alerts."
+    },
+    "RC-06": {
+      "name": "Local VLAN Database Integrity",
+      "category": "STP",
+      "severity": "Medium",
+      "layer": "Layer 2 (Data Link)",
+      "description": "Verifies if the VLAN database contains the required VLAN records for assigned switchports."
+    },
+    "RC-07": {
+      "name": "Native VLAN Trunk Sync",
+      "category": "STP",
+      "severity": "High",
+      "layer": "Layer 2 (Data Link)",
+      "description": "Detects native VLAN mismatches across connected trunk ports."
+    },
+    "RC-08": {
+      "name": "Subnet Routing Integrity",
+      "category": "Routing",
+      "severity": "High",
+      "layer": "Layer 3 (Network)",
+      "description": "Validates routing tables for complete subnet reachability, static default routes, or OSPF route advertisements."
+    },
+    "RC-09": {
+      "name": "Access Control List Audit",
+      "category": "Security",
+      "severity": "High",
+      "layer": "Layer 4 (Transport)",
+      "description": "Inspects access lists for implicit or explicit deny blocks on standard application ports."
+    },
+    "RC-10": {
+      "name": "DHCP Lease Pool Capacity",
+      "category": "IPAM",
+      "severity": "Critical",
+      "layer": "Layer 7 (Application)",
+      "description": "Evaluates DHCP binding statistics and alerts when pools reach 100% exhaustion or Option 43 is missing."
+    },
+    "RC-11": {
+      "name": "DHCP Helper Address Validation",
+      "category": "IPAM",
+      "severity": "High",
+      "layer": "Layer 3 (Network)",
+      "description": "Ensures routing interfaces forwarding broadcast requests have ip helper-address configured."
+    },
+    "RC-12": {
+      "name": "NAT Pool Capacity Verification",
+      "category": "IPAM",
+      "severity": "High",
+      "layer": "Layer 3 (Network)",
+      "description": "Checks dynamic NAT pool translation capacity and flags translation creation failures."
+    },
+    "RC-13": {
+      "name": "Port Security Violation Check",
+      "category": "Security",
+      "severity": "Critical",
+      "layer": "Layer 2 (Data Link)",
+      "description": "Detects interfaces in err-disabled state due to port-security MAC violations."
+    },
+    "RC-14": {
+      "name": "NAT Configuration Check (Inside/Outside)",
+      "category": "Routing",
+      "severity": "High",
+      "layer": "Layer 3 (Network)",
+      "description": "Checks for missing ip nat inside or ip nat outside declarations on routing interfaces."
+    },
+    "RC-15": {
+      "name": "802.1Q Encapsulation Verification",
+      "category": "STP",
+      "severity": "Medium",
+      "layer": "Layer 2 (Data Link)",
+      "description": "Validates subinterface dot1Q encapsulation tags against target VLAN assignments."
+    }
+  },
+  "safetyPolicies": {
+    "requireHumanAuthorization": true,
+    "blockDirectDeviceExecution": true,
+    "blockUngroundedAIClaims": true,
+    "hashAlgorithm": "SHA-256",
+    "genesisHash": "sha256:genesis_block_init"
+  },
+  "thresholds": {
+    "confidenceMinApproval": "Medium",
+    "maxPromptTokens": 4096,
+    "minCaseCount": 30
+  }
+}
