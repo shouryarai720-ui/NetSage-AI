@@ -1,5 +1,76 @@
 [
   {
+    "timestamp": "2026-08-22 16:43:05",
+    "actionType": "OPERATOR REJECT",
+    "targetNode": "User-PC-01",
+    "message": "Case NET-001 rejected by M. Zhao (NetOps Lead). Reason: AI proposal does not address underlying physical carrier defect. Physical line repair scheduled.",
+    "integrityToken": "sha256:8df97045b34bbdb6cdbd7e98dab0db4224ee6ddc4985cf76170d3f6b40a78f58",
+    "safetyStatus": "BLOCKED",
+    "caseId": "NET-001",
+    "aiDiagnosis": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prevents routing gateway operations for VLAN 30 clients.",
+    "confidence": "95%",
+    "evidence": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prev",
+    "originalCommands": [
+      "interface GigabitEthernet0/0/0.10",
+      "no shutdown",
+      "description Verified by Operator M. Zhao"
+    ],
+    "humanDecision": "REJECTED",
+    "reviewer": "M. Zhao (NetOps Lead)",
+    "reason": "AI proposal does not address underlying physical carrier defect. Physical line repair scheduled.",
+    "previousHash": "sha256:aaa4dfda8bd5bd2ac06597e7f53fb399865c3ba1d2e78437b34d8ca21ea0c9f5",
+    "currentHash": "sha256:8df97045b34bbdb6cdbd7e98dab0db4224ee6ddc4985cf76170d3f6b40a78f58"
+  },
+  {
+    "timestamp": "2026-08-22 16:43:01",
+    "actionType": "OPERATOR OVERRIDE",
+    "targetNode": "User-PC-01",
+    "message": "Case NET-001 approved with human-modified commands by M. Zhao (NetOps Lead). Reason: Added explicit description tag and interface scope for enterprise traceability.",
+    "integrityToken": "sha256:aaa4dfda8bd5bd2ac06597e7f53fb399865c3ba1d2e78437b34d8ca21ea0c9f5",
+    "safetyStatus": "MODIFIED",
+    "caseId": "NET-001",
+    "aiDiagnosis": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prevents routing gateway operations for VLAN 30 clients.",
+    "confidence": "95%",
+    "evidence": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prev",
+    "originalCommands": [
+      "configure terminal",
+      "interface GigabitEthernet0/0.30",
+      "no shutdown"
+    ],
+    "editedCommands": [
+      "interface GigabitEthernet0/0/0.10",
+      "no shutdown",
+      "description Verified by Operator M. Zhao"
+    ],
+    "humanDecision": "EDITED",
+    "reviewer": "M. Zhao (NetOps Lead)",
+    "reason": "Added explicit description tag and interface scope for enterprise traceability.",
+    "previousHash": "sha256:a9cc1ce081c06ba40c94a1394627bf15eb810a5b75ba559e15cfd83dbefe349e",
+    "currentHash": "sha256:aaa4dfda8bd5bd2ac06597e7f53fb399865c3ba1d2e78437b34d8ca21ea0c9f5"
+  },
+  {
+    "timestamp": "2026-08-22 16:42:57",
+    "actionType": "HUMAN GATE PASS",
+    "targetNode": "User-PC-01",
+    "message": "Case NET-001 approved by Operator M. Zhao. Remediation commands queued for Packet Tracer simulation.",
+    "integrityToken": "sha256:a9cc1ce081c06ba40c94a1394627bf15eb810a5b75ba559e15cfd83dbefe349e",
+    "safetyStatus": "COMPLIANT",
+    "caseId": "NET-001",
+    "aiDiagnosis": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prevents routing gateway operations for VLAN 30 clients.",
+    "confidence": "95%",
+    "evidence": "The sub-interface GigabitEthernet0/0.30 is administratively disabled, which prev",
+    "originalCommands": [
+      "configure terminal",
+      "interface GigabitEthernet0/0.30",
+      "no shutdown"
+    ],
+    "humanDecision": "ACCEPTED",
+    "reviewer": "M. Zhao (NetOps Lead)",
+    "reason": "Grounded evidence confirmed against Packet Tracer topology.",
+    "previousHash": "sha256:a7adced41a52d627ffeede1efbbb33137417df6a6acb6452919d0898850ab768",
+    "currentHash": "sha256:a9cc1ce081c06ba40c94a1394627bf15eb810a5b75ba559e15cfd83dbefe349e"
+  },
+  {
     "timestamp": "2026-08-22 16:10:52",
     "actionType": "OPERATOR REJECT",
     "targetNode": "User-PC-01",

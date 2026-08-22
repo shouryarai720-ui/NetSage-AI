@@ -1,6 +1,6 @@
 # NetSage AI — Final Test Matrix
 
-This document provides a highly structured, human-readable overview of all 30 target troubleshooting cases. It serves as our official verification matrix, mapping incident IDs to their OSI layer, severity, fault description, and deterministic rule validation codes.
+This document provides a highly structured, human-readable overview of all 35 target troubleshooting cases. It serves as our official verification matrix, mapping incident IDs to their OSI layer, severity, fault description, and deterministic rule validation codes.
 
 ---
 

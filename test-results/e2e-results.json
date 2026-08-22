@@ -22,7 +22,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/app/applet/test-results",
+        "outputDir": "/app/applet/test-results/artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -53,7 +53,7 @@
       [
         "html",
         {
-          "outputFolder": "test-results/e2e-html-report",
+          "outputFolder": "playwright-report",
           "open": "never"
         }
       ]
@@ -100,25 +100,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2896,
+                      "duration": 2099,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:20.413Z",
+                      "startTime": "2026-08-22T16:42:39.633Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/01-app-load-01---Applicati-e3e42-out-and-zero-console-errors-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/01-app-load-01---Applicati-e3e42-out-and-zero-console-errors-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -162,25 +151,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6556,
+                      "duration": 5413,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:23.757Z",
+                      "startTime": "2026-08-22T16:42:42.032Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/02-navigation-02---Navigat-363a0-seamlessly-without-crashing-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/02-navigation-02---Navigat-363a0-seamlessly-without-crashing-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -224,25 +202,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3694,
+                      "duration": 3221,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:31.134Z",
+                      "startTime": "2026-08-22T16:42:47.470Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/03-cases-03---Case-Catalog-4e8c4-d-case-selection-navigation-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/03-cases-03---Case-Catalog-4e8c4-d-case-selection-navigation-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -286,25 +253,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4397,
+                      "duration": 3800,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:35.222Z",
+                      "startTime": "2026-08-22T16:42:50.712Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/04-diagnosis-04---Complete-6d107-put-and-OSI-layer-detection-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/04-diagnosis-04---Complete-6d107-put-and-OSI-layer-detection-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -348,25 +304,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3857,
+                      "duration": 3706,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:40.097Z",
+                      "startTime": "2026-08-22T16:42:54.550Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/05-hitl-accept-05---Human--4e3f8--and-generates-audit-record-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/05-hitl-accept-05---Human--4e3f8--and-generates-audit-record-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -410,25 +355,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4375,
+                      "duration": 3889,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:44.345Z",
+                      "startTime": "2026-08-22T16:42:58.282Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/06-hitl-edit-06---Human-in-6bd74--commits-override-to-ledger-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/06-hitl-edit-06---Human-in-6bd74--commits-override-to-ledger-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -472,25 +406,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4483,
+                      "duration": 4016,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:49.125Z",
+                      "startTime": "2026-08-22T16:43:02.200Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/07-hitl-reject-07---Human--6ff97-ted-and-records-audit-entry-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/07-hitl-reject-07---Human--6ff97-ted-and-records-audit-entry-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -534,25 +457,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3306,
+                      "duration": 2927,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:53.968Z",
+                      "startTime": "2026-08-22T16:43:06.237Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/08-audit-08---Cryptographi-262a2-detects-integrity-tampering-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/08-audit-08---Cryptographi-262a2-detects-integrity-tampering-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -596,25 +508,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2798,
+                      "duration": 2748,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:10:57.576Z",
+                      "startTime": "2026-08-22T16:43:09.189Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/09-report-09---Incident-Re-18120-F-audit-export-successfully-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/09-report-09---Incident-Re-18120-F-audit-export-successfully-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -658,25 +559,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2603,
+                      "duration": 2330,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:11:00.658Z",
+                      "startTime": "2026-08-22T16:43:11.971Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/10-responsible-ai-10---Res-32fdb-zero-hallucination-policies-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/10-responsible-ai-10---Res-32fdb-zero-hallucination-policies-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -720,25 +610,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2192,
+                      "duration": 2131,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:11:03.490Z",
+                      "startTime": "2026-08-22T16:43:14.322Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/11-error-handling-11---Err-fd767-sts-with-friendly-responses-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/11-error-handling-11---Err-fd767-sts-with-friendly-responses-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -782,25 +661,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3996,
+                      "duration": 3987,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-22T16:11:05.859Z",
+                      "startTime": "2026-08-22T16:43:16.483Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/app/applet/test-results/12-responsive-12---Respons-2639a-rts-without-visual-clipping-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/app/applet/test-results/12-responsive-12---Respons-2639a-rts-without-visual-clipping-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -818,8 +686,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-22T16:10:19.268Z",
-    "duration": 50909.606,
+    "startTime": "2026-08-22T16:42:38.729Z",
+    "duration": 41863.880000000005,
     "expected": 12,
     "skipped": 0,
     "unexpected": 0,
